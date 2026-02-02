@@ -19,7 +19,6 @@ body{
     text-align:center;
 }
 
-/* card */
 .container{
     background:rgba(255,255,255,0.15);
     padding:40px;
@@ -30,7 +29,6 @@ body{
     max-width:320px;
 }
 
-/* ring */
 img{
     width:140px;
     border-radius:15px;
@@ -54,10 +52,10 @@ button{
 #no{
     background:#dc3545;
     color:white;
-    position:fixed; /* important for full screen movement */
+    position:fixed; /* allows free movement */
 }
 
-/* floating hearts */
+/* hearts */
 .heart{
     position:absolute;
     animation:float 5s linear infinite;
@@ -94,12 +92,12 @@ const music = document.getElementById("bgMusic");
 
 let running = true;
 
-/* play music after first click */
+/* play music on first click */
 document.body.addEventListener("click", () => {
     music.play();
 }, { once:true });
 
-/* function to move NO button randomly */
+/* move function */
 function moveNo(){
     if(!running) return;
 
@@ -113,21 +111,14 @@ function moveNo(){
     no.style.top = y + "px";
 }
 
-/* run away on hover */
-no.addEventListener("mouseover", moveNo);
-
-/* run away on click */
-no.addEventListener("click", (e)=>{
-    e.preventDefault();
-    moveNo();
-});
-
-/* run automatically every 700ms (indefinite chaos 😂) */
-setInterval(moveNo, 700);
+/* ONLY move when user tries to click/hover */
+no.addEventListener("mouseenter", moveNo);
+no.addEventListener("mousedown", moveNo);
+no.addEventListener("touchstart", moveNo); // mobile support
 
 /* YES clicked */
 yes.onclick = () => {
-    running = false;  // stop moving
+    running = false;
     no.style.display = "none";
 
     box.innerHTML = `
