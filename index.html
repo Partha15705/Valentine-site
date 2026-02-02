@@ -1,139 +1,121 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-<meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>For Rishiddhi ❤️</title>
 
 <style>
 body{
-    margin:0;
-    height:100vh;
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    font-family:Arial, sans-serif;
-    background:linear-gradient(135deg,#ff4d6d,#ff8fa3);
-    overflow:hidden;
+  margin:0;
+  height:100vh;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  font-family:Arial;
+  background:linear-gradient(135deg,#ff4d6d,#ff8fa3);
 }
 
 /* card */
 .container{
-    width:320px;
-    height:420px;
-    padding:20px;
-    text-align:center;
-    color:white;
-    background:rgba(255,255,255,0.15);
-    border-radius:25px;
-    backdrop-filter:blur(10px);
-    position:relative;
-    overflow:hidden;
+  width:320px;
+  height:380px;
+  padding:20px;
+  text-align:center;
+  color:white;
+  background:rgba(255,255,255,0.15);
+  border-radius:20px;
+  position:relative;
+  overflow:hidden;
 }
 
-/* ring */
-img{
-    width:130px;
-    border-radius:12px;
-    margin-bottom:10px;
-}
-
+/* buttons */
 button{
-    padding:10px 22px;
-    border:none;
-    border-radius:25px;
-    margin:10px;
-    font-size:16px;
+  padding:10px 20px;
+  border:none;
+  border-radius:20px;
+  margin:10px;
+  font-size:16px;
 }
 
-#yes{
-    background:#28a745;
-    color:white;
-}
-
+#yes{background:#28a745;color:white;}
 #no{
-    background:#dc3545;
-    color:white;
-    position:absolute;
-    transition:0.15s;
+  background:#dc3545;
+  color:white;
+  position:absolute;
+}
+
+/* special love text */
+.loveText{
+  font-size:22px;
+  font-weight:bold;
+  margin-top:15px;
+  color:#fff;
+  text-shadow:0 0 10px pink, 0 0 20px red;
 }
 
 /* floating hearts */
 .heart{
-    position:absolute;
-    animation:float 5s linear infinite;
+  position:absolute;
+  animation:float 5s linear infinite;
 }
 
 @keyframes float{
-    0%{transform:translateY(100vh);opacity:1;}
-    100%{transform:translateY(-10vh);opacity:0;}
+  0%{transform:translateY(100vh);opacity:1;}
+  100%{transform:translateY(-10vh);opacity:0;}
 }
 </style>
 </head>
 
 <body>
 
-<!-- 🔥 AUTOPLAY MUSIC (muted trick) -->
-<audio id="bgMusic" autoplay loop muted>
-    <source src="kissme.mp3" type="audio/mpeg">
-</audio>
-
 <div class="container" id="box">
 
-    <img src="https://images.unsplash.com/photo-1605100804763-247f67b3557e" alt="ring">
+  <h3>Rishiddhi ❤️<br>Will you be my Valentine?</h3>
 
-    <h2>Rishiddhi ❤️<br>Will you be my Valentine?</h2>
-
-    <button id="yes">Yes 💖</button>
-    <button id="no">No 😜</button>
+  <button id="yes">Yes 💖</button>
+  <button id="no">No 😜</button>
 
 </div>
 
 <script>
-const music = document.getElementById("bgMusic");
 const yes = document.getElementById("yes");
 const no = document.getElementById("no");
 const box = document.getElementById("box");
 
-/* 🔥 force autoplay + unmute */
-window.addEventListener("load", () => {
-    music.play().then(()=>{
-        music.muted = false;   // unmute after autoplay starts
-    }).catch(()=>{});
-});
+let music = new Audio("kissme.mp3");
+music.loop = true;
 
-/* NO button movement inside card */
+/* move NO */
 function moveNo(){
-    const maxX = box.clientWidth - no.offsetWidth;
-    const maxY = box.clientHeight - no.offsetHeight;
-
-    no.style.left = Math.random()*maxX + "px";
-    no.style.top  = Math.random()*maxY + "px";
+  const maxX = box.clientWidth - no.offsetWidth;
+  const maxY = box.clientHeight - no.offsetHeight;
+  no.style.left = Math.random()*maxX + "px";
+  no.style.top  = Math.random()*maxY + "px";
 }
 
-no.addEventListener("mouseenter", moveNo);
 no.addEventListener("touchstart", e=>{e.preventDefault(); moveNo();});
+no.addEventListener("mouseenter", moveNo);
 
 /* YES clicked */
 yes.onclick = () => {
-    no.style.display = "none";
 
-    box.innerHTML = `
-        <h2>Yayyyy Rishiddhi 🥰❤️</h2>
-        <p>You caught my heart 💓</p>
-        <h2>Forever my Valentine 💍</h2>
-        <h2>I Love You THE MOST😤🫶🏻</h2>
-    `;
+  music.play();
+
+  box.innerHTML = `
+    <h2>Yayyyy Rishiddhi 🥰❤️</h2>
+    <p>You are mine forever 💍</p>
+    <h2 class="loveText">I Love You THE MOST 😤🫶🏻</h2>
+  `;
 };
 
 /* floating hearts */
 setInterval(()=>{
-    const heart=document.createElement("div");
-    heart.className="heart";
-    heart.innerHTML="❤️";
-    heart.style.left=Math.random()*100+"%";
-    document.body.appendChild(heart);
-    setTimeout(()=>heart.remove(),5000);
+  const heart=document.createElement("div");
+  heart.className="heart";
+  heart.innerHTML="❤️";
+  heart.style.left=Math.random()*100+"%";
+  document.body.appendChild(heart);
+  setTimeout(()=>heart.remove(),5000);
 },300);
 </script>
 
