@@ -9,37 +9,40 @@
 body{
     margin:0;
     height:100vh;
-    font-family:Arial, sans-serif;
     display:flex;
     justify-content:center;
     align-items:center;
+    font-family:Arial, sans-serif;
     background:linear-gradient(135deg,#ff4d6d,#ff8fa3);
     overflow:hidden;
     color:white;
-    text-align:center;
 }
 
+/* CARD (movement area) */
 .container{
+    width:320px;
+    height:380px;
     background:rgba(255,255,255,0.15);
-    padding:35px;
     border-radius:25px;
     backdrop-filter:blur(10px);
     box-shadow:0 10px 30px rgba(0,0,0,0.3);
-    max-width:320px;
+    position:relative;   /* 🔥 important */
+    text-align:center;
+    padding:20px;
+    overflow:hidden;     /* 🔥 prevents escape */
 }
 
 img{
-    width:130px;
+    width:120px;
+    margin:10px 0;
     border-radius:12px;
-    margin-bottom:10px;
 }
 
 button{
-    padding:12px 28px;
-    font-size:18px;
+    padding:10px 22px;
+    font-size:16px;
     border:none;
-    border-radius:30px;
-    margin:10px;
+    border-radius:25px;
 }
 
 #yes{
@@ -50,11 +53,10 @@ button{
 #no{
     background:#dc3545;
     color:white;
-    position:fixed;
-    transition:0.12s;
+    position:absolute;   /* 🔥 now limited inside container */
 }
 
-/* floating hearts */
+/* hearts */
 .heart{
     position:absolute;
     animation:float 5s linear infinite;
@@ -69,18 +71,19 @@ button{
 
 <body>
 
-<!-- 🎵 Music -->
 <audio id="bgMusic" loop>
     <source src="kissme.mp3" type="audio/mpeg">
 </audio>
 
 <div class="container" id="box">
-    <img src="https://images.unsplash.com/photo-1605100804763-247f67b3557e" alt="ring">
 
-    <h2>Rishiddhi ❤️<br>Will you be my Valentine?</h2>
+    <img src="https://images.unsplash.com/photo-1605100804763-247f67b3557e">
+
+    <h3>Rishiddhi ❤️<br>Will you be my Valentine?</h3>
 
     <button id="yes">Yes 💖</button>
     <button id="no">No 😜</button>
+
 </div>
 
 <script>
@@ -95,45 +98,28 @@ let running = true;
 document.body.addEventListener("touchstart", () => music.play(), { once:true });
 document.body.addEventListener("click", () => music.play(), { once:true });
 
-/* safe move inside screen */
+/* safe movement ONLY inside card */
 function moveNo(){
     if(!running) return;
 
+    const boxRect = box.getBoundingClientRect();
     const btnW = no.offsetWidth;
     const btnH = no.offsetHeight;
 
-    const padding = 10;
+    const maxX = box.clientWidth - btnW;
+    const maxY = box.clientHeight - btnH;
 
-    const x = Math.random() * (window.innerWidth - btnW - padding);
-    const y = Math.random() * (window.innerHeight - btnH - padding);
+    const x = Math.random() * maxX;
+    const y = Math.random() * maxY;
 
     no.style.left = x + "px";
     no.style.top = y + "px";
 }
 
-/* DESKTOP */
+/* mobile + desktop triggers */
+no.addEventListener("touchstart", e => { e.preventDefault(); moveNo(); });
 no.addEventListener("mouseenter", moveNo);
 no.addEventListener("mousedown", moveNo);
-
-/* MOBILE (important) */
-no.addEventListener("touchstart", (e)=>{
-    e.preventDefault();
-    moveNo();
-});
-
-/* also jump if finger comes near */
-document.addEventListener("touchmove", (e)=>{
-    const touch = e.touches[0];
-
-    const rect = no.getBoundingClientRect();
-
-    const dx = Math.abs(touch.clientX - (rect.left + rect.width/2));
-    const dy = Math.abs(touch.clientY - (rect.top + rect.height/2));
-
-    if(dx < 80 && dy < 80){
-        moveNo();
-    }
-});
 
 /* YES clicked */
 yes.onclick = () => {
@@ -141,7 +127,7 @@ yes.onclick = () => {
     no.style.display = "none";
 
     box.innerHTML = `
-        <h1>Yayyyy Rishiddhi 🥰❤️</h1>
+        <h2>Yayyyy Rishiddhi 🥰❤️</h2>
         <p>You caught my heart 💓</p>
         <h2>Forever my Valentine 💍</h2>
     `;
@@ -152,7 +138,7 @@ setInterval(()=>{
     const heart=document.createElement("div");
     heart.className="heart";
     heart.innerHTML="❤️";
-    heart.style.left=Math.random()*100+"vw";
+    heart.style.left=Math.random()*100+"%";
     document.body.appendChild(heart);
     setTimeout(()=>heart.remove(),5000);
 },300);
