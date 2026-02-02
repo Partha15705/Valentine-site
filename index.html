@@ -15,45 +15,42 @@ body{
     font-family:Arial, sans-serif;
     background:linear-gradient(135deg,#ff4d6d,#ff8fa3);
     overflow:hidden;
-    color:white;
 }
 
-/* CARD (movement area) */
+/* card */
 .container{
     width:320px;
-    height:380px;
+    height:420px;
     background:rgba(255,255,255,0.15);
     border-radius:25px;
     backdrop-filter:blur(10px);
     box-shadow:0 10px 30px rgba(0,0,0,0.3);
-    position:relative;   /* 🔥 important */
+    position:relative;
     text-align:center;
     padding:20px;
-    overflow:hidden;     /* 🔥 prevents escape */
+    color:white;
+    overflow:hidden;
 }
 
 img{
-    width:120px;
-    margin:10px 0;
+    width:130px;
     border-radius:12px;
 }
 
 button{
-    padding:10px 22px;
+    padding:10px 24px;
     font-size:16px;
     border:none;
     border-radius:25px;
+    margin:10px;
 }
 
-#yes{
-    background:#28a745;
-    color:white;
-}
-
+#yes{ background:#28a745; color:white; }
 #no{
     background:#dc3545;
     color:white;
-    position:absolute;   /* 🔥 now limited inside container */
+    position:absolute;
+    transition:0.15s;
 }
 
 /* hearts */
@@ -71,15 +68,14 @@ button{
 
 <body>
 
-<audio id="bgMusic" loop>
-    <source src="kissme.mp3" type="audio/mpeg">
-</audio>
+<!-- 🔥 NO SOURCE initially (prevents autoplay completely) -->
+<audio id="bgMusic" loop></audio>
 
 <div class="container" id="box">
 
     <img src="https://images.unsplash.com/photo-1605100804763-247f67b3557e">
 
-    <h3>Rishiddhi ❤️<br>Will you be my Valentine?</h3>
+    <h2>Rishiddhi ❤️<br>Will you be my Valentine?</h2>
 
     <button id="yes">Yes 💖</button>
     <button id="no">No 😜</button>
@@ -94,30 +90,22 @@ const music = document.getElementById("bgMusic");
 
 let running = true;
 
-/* play music after first tap */
-document.body.addEventListener("touchstart", () => music.play(), { once:true });
-document.body.addEventListener("click", () => music.play(), { once:true });
-
-/* safe movement ONLY inside card */
+/* NO button safe movement inside card */
 function moveNo(){
     if(!running) return;
 
-    const boxRect = box.getBoundingClientRect();
     const btnW = no.offsetWidth;
     const btnH = no.offsetHeight;
 
     const maxX = box.clientWidth - btnW;
     const maxY = box.clientHeight - btnH;
 
-    const x = Math.random() * maxX;
-    const y = Math.random() * maxY;
-
-    no.style.left = x + "px";
-    no.style.top = y + "px";
+    no.style.left = Math.random()*maxX + "px";
+    no.style.top  = Math.random()*maxY + "px";
 }
 
-/* mobile + desktop triggers */
-no.addEventListener("touchstart", e => { e.preventDefault(); moveNo(); });
+/* mobile + desktop */
+no.addEventListener("touchstart", e=>{e.preventDefault(); moveNo();});
 no.addEventListener("mouseenter", moveNo);
 no.addEventListener("mousedown", moveNo);
 
@@ -126,11 +114,16 @@ yes.onclick = () => {
     running = false;
     no.style.display = "none";
 
+    /* 🔥 ADD SONG ONLY NOW */
+    music.src = "kissme.mp3";
+    music.load();
+    music.play();
+
     box.innerHTML = `
         <h2>Yayyyy Rishiddhi 🥰❤️</h2>
         <p>You caught my heart 💓</p>
         <h2>Forever my Valentine 💍</h2>
-        <h2>I love you THE MOST😤🫶🏻</h2>
+        <h2>I Love You THE MOST😤🫶🏻</h2>
     `;
 };
 
