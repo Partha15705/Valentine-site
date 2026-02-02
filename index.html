@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>For Rishiddhi ❤️</title>
 
 <style>
@@ -19,7 +19,7 @@ body{
     text-align:center;
 }
 
-/* main card */
+/* Card */
 .container{
     background:rgba(255,255,255,0.15);
     padding:40px;
@@ -27,10 +27,18 @@ body{
     backdrop-filter:blur(10px);
     box-shadow:0 10px 30px rgba(0,0,0,0.3);
     position:relative;
+    max-width:320px;
+}
+
+/* Ring image */
+img{
+    width:140px;
+    border-radius:15px;
+    margin-bottom:15px;
 }
 
 h1{
-    font-size:2.2rem;
+    font-size:22px;
 }
 
 button{
@@ -43,16 +51,18 @@ button{
     transition:.2s;
 }
 
-#yes{background:#28a745;color:white;}
-#no{background:#dc3545;color:white;position:absolute;}
-
-img{
-    width:150px;
-    margin:15px 0;
-    border-radius:15px;
+#yes{
+    background:#28a745;
+    color:white;
 }
 
-/* floating hearts */
+#no{
+    background:#dc3545;
+    color:white;
+    position:absolute;
+}
+
+/* Floating hearts */
 .heart{
     position:absolute;
     animation:float 5s linear infinite;
@@ -68,15 +78,15 @@ img{
 
 <body>
 
-<!-- 🎵 MUSIC (add your mp3 file here) -->
-<audio autoplay loop>
-  <source src="kissme.mp3" type="audio/mpeg">
+<!-- 🎵 Music (plays after first click) -->
+<audio id="bgMusic" loop>
+    <source src="kissme.mp3" type="audio/mpeg">
 </audio>
 
 <div class="container" id="box">
 
-    <!-- ring image -->
-    <img src="https://images.unsplash.com/photo-1605100804763-247f67b3557e" alt="ring">
+    <!-- Ring image -->
+    <img src="https://images.unsplash.com/photo-1605100804763-247f67b3557e" alt="Ring">
 
     <h1>Rishiddhi ❤️<br>Will you be my Valentine?</h1>
 
@@ -89,18 +99,24 @@ img{
 const yes = document.getElementById("yes");
 const no = document.getElementById("no");
 const box = document.getElementById("box");
+const music = document.getElementById("bgMusic");
 
-/* YES click = romantic ending */
+/* 🔥 Play music on first click anywhere (browser safe) */
+document.body.addEventListener("click", () => {
+    music.play();
+}, { once: true });
+
+/* YES clicked */
 yes.onclick = () => {
     box.innerHTML = `
         <h1>Yayyyyy Rishiddhi 🥰❤️</h1>
         <h2>You just made my heart skip 100 beats 💓</h2>
-        <p>Now you’re stuck with me forever 😆💕</p>
-        <h1>💍❤️💍</h1>
+        <p>Now you’re officially my Valentine forever 😆💕</p>
+        <h1 style="font-size:50px">💍❤️💍</h1>
     `;
 };
 
-/* NO button runs away */
+/* Funny running NO button */
 no.onmouseover = () => {
     const x = Math.random()*(window.innerWidth-120);
     const y = Math.random()*(window.innerHeight-60);
@@ -108,13 +124,15 @@ no.onmouseover = () => {
     no.style.top = y+"px";
 };
 
-/* floating hearts animation */
+/* Floating hearts animation */
 setInterval(()=>{
     const heart=document.createElement("div");
     heart.className="heart";
     heart.innerHTML="❤️";
     heart.style.left=Math.random()*100+"vw";
+    heart.style.fontSize=(18+Math.random()*25)+"px";
     document.body.appendChild(heart);
+
     setTimeout(()=>heart.remove(),5000);
 },300);
 </script>
